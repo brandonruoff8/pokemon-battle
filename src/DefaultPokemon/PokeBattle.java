@@ -8,11 +8,12 @@ import javax.swing.JFrame;
 
 public class PokeBattle {
 	
+	PokeFrame frame = new PokeFrame();
+	
 	Scanner in = new Scanner(System.in);
 	
 	public void commence(TypeList typeList, MoveList moveList, PokeList pokeList, PokeInfo info) {	
-		
-		PokeFrame frame = new PokeFrame();	
+			
 		frame.setTitle("Brandon's Pokemon Emulator");
 	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    frame.setVisible(true);
@@ -58,28 +59,28 @@ public class PokeBattle {
 		int indivTurnCounter = 0;
 
 		Music music1 = new Music();
-		music1.songName = "TellurTownAutumnPokkenTournament.wav";
+		music1.songName = "music/TellurTownAutumnPokkenTournament.wav";
 		music1.run();
 		
 		pause(2000);
 		frame.setLabelText("Brandon: Welcome challenger. My name is Brandon. Pleased to meet you, " + info.playerName + ". \n");
-		promptEnterKey();
+		pause(2000);
 		frame.setLabelText("I have traveled the world with my hardworking Pokemon only to return back to the" + "\n");
-		promptEnterKey();
+		pause(2000);
 		frame.setLabelText("United States and claim my place as champion.  We have been through a lot." + "\n");
-		promptEnterKey();
+		pause(2000);
 		frame.setLabelText("Do you think you have what it takes to take my place as the champion of the USA?" + "\n");
-		promptEnterKey();
+		pause(2000);
 		frame.setLabelText("Let's find out! Go " + brandonPoke.getName() + "!" + "\n\n");
-		promptEnterKey();
+		pause(2000);
 		frame.setLabelText("You sent out " + playerPoke.getName() + "." + "\n\n");
-		promptEnterKey();
+		pause(2000);
 		
 		while (stillCanBattlePlayer && stillCanBattleBrandon) {
 			turnCounter++;
 			indivTurnCounter++;
 			checkSpecialPowers(indivTurnCounter, brandonPoke, pokeBstats);
-			printCurrent(info, playerPoke, brandonPoke, poke1stats, pokeBstats);
+			printCurrent2(info, playerPoke, brandonPoke, poke1stats, pokeBstats);
 			pause(2000);
 			playerUseMove = playerDecision(playerPoke);
 			brandonUseMove = brandonDecision(info, brandonPoke, playerPoke, pokeBstats, poke1stats);
@@ -169,6 +170,10 @@ public class PokeBattle {
 				+ "Lv." + brandonPoke.getLevel() + " " + playerPoke.getName() + "\n"
 				+ "HP: " + (int)poke1stats[0] + " / " + playerPoke.getHP() + "\n"
 				+ "-------------------" + "\n\n");
+	}
+	
+	public void printCurrent2(PokeInfo info, Pokemon playerPoke, Pokemon brandonPoke, double[] poke1stats, double[] pokeBstats) {
+		frame.setMoveButtons(playerPoke);
 	}
 	
 	public Move playerDecision(Pokemon playerPoke) {
@@ -451,39 +456,39 @@ public class PokeBattle {
 	public void printFaintGalvantula() {
 		System.out.println("Brandon: You did a great job Galvantula. You got us off to a great start. However, challenger,");
 		System.out.println("it would appear now that my team and I will have turn it up a notch.");
-		promptEnterKey();
+		pause(2000);
 		System.out.println("You won't defeat me easily. I can guarantee you that right now.");
-		promptEnterKey();
+		pause(2000);
 		System.out.println("Alright then. Time for my second Pokemon. Go Infernape! Show them how your heart burns for victory!");
-		promptEnterKey();
+		pause(2000);
 	}
 	
 	public void printFaintInfernape() {
-		promptEnterKey();
+		pause(2000);
 		System.out.println("Brandon: Go! Klinklang!");
 	}
 	
 	public void printFaintKlinklang() {
-		promptEnterKey();
+		pause(2000);
 		System.out.println("Brandon: Go! Wishiwashi!");
 	}
 	
 	public void printFaintWishiwashi() {
-		promptEnterKey();
+		pause(2000);
 		System.out.println("Brandon: Go! Sylveon!");
 	}
 	
 	public void printFaintSylveon() {
-		promptEnterKey();
+		pause(2000);
 		System.out.println("Brandon: Go! Medicham!");
 	}
 	
 	public void printFaintMedicham() {
-		promptEnterKey();
+		pause(2000);
 		System.out.println("Brandon: Oh no... this can't be...");		
 	}
 	
-	public void promptEnterKey(){
+	public void promptEnterKey() {
 	    try {
 	        System.in.read();
 	    } 

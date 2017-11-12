@@ -1,29 +1,30 @@
 package DefaultPokemon;
+import java.awt.Color;
 
 import java.util.Arrays;
 
 public class TypeList {
 	
 	// Initialize 18 types
-			Type none = new Type("NONE");
-			Type normal = new Type("NORMAL");
-			Type fire = new Type("FIRE");
-			Type water = new Type("WATER");
-			Type electric = new Type("ELECTRIC");
-			Type grass = new Type("GRASS");
-			Type ice = new Type("ICE");
-			Type fighting = new Type("FIGHTING");
-			Type poison = new Type("POISON");
-			Type ground = new Type("GROUND");
-			Type flying = new Type("FLYING");
-			Type psychic = new Type("PSYCHIC");
-			Type bug = new Type("BUG");
-			Type rock = new Type("ROCK");
-			Type ghost = new Type("GHOST");
-			Type dragon = new Type("DRAGON");
-			Type dark = new Type("DARK");
-			Type steel = new Type("STEEL");
-			Type fairy = new Type("FAIRY");
+			Type none = new Type("NONE", Color.WHITE);
+			Type normal = new Type("NORMAL", Color.LIGHT_GRAY);
+			Type fire = new Type("FIRE", Color.RED);
+			Type water = new Type("WATER", Color.BLUE);
+			Type electric = new Type("ELECTRIC", Color.YELLOW);
+			Type grass = new Type("GRASS", Color.GREEN);
+			Type ice = new Type("ICE", Color.CYAN);
+			Type fighting = new Type("FIGHTING", Color.RED);
+			Type poison = new Type("POISON", Color.MAGENTA);
+			Type ground = new Type("GROUND", Color.GRAY);
+			Type flying = new Type("FLYING", Color.CYAN);
+			Type psychic = new Type("PSYCHIC", Color.PINK);
+			Type bug = new Type("BUG", Color.GREEN);
+			Type rock = new Type("ROCK", Color.GRAY);
+			Type ghost = new Type("GHOST", Color.MAGENTA);
+			Type dragon = new Type("DRAGON", Color.BLUE);
+			Type dark = new Type("DARK", Color.BLACK);
+			Type steel = new Type("STEEL", Color.GRAY);
+			Type fairy = new Type("FAIRY", Color.PINK);
 			
 			Type[] typeArray = {none, normal, fire, water, electric, grass, ice, fighting, poison, ground,
 						flying, psychic, bug, rock, ghost, dragon, dark, steel, fairy};
