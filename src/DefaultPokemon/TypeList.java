@@ -5,26 +5,38 @@ import java.util.Arrays;
 
 public class TypeList {
 	
+	Color DARK_BROWN = new Color(179, 117, 59);
+	Color LIGHT_BROWN = new Color(207, 156, 107);
+	Color BUG_GREEN = new Color(117, 179, 59);
+	Color ICE_BLUE = new Color(163, 244, 244);
+	Color LIGHT_PINK = new Color(181, 209, 237);
+	Color HOT_PINK = new Color(212, 125, 171);
+	Color VIOLET = new Color(128, 69, 194);
+	Color BRICK_RED = new Color(140, 46, 46);
+	Color BLUE_VIOLET = new Color(82, 59, 176);
+	Color TAN = new Color(224, 207, 163);
+	Color SKY = new Color (176, 163, 224);
+	
 	// Initialize 18 types
 			Type none = new Type("NONE", Color.WHITE);
-			Type normal = new Type("NORMAL", Color.LIGHT_GRAY);
+			Type normal = new Type("NORMAL", TAN);
 			Type fire = new Type("FIRE", Color.RED);
 			Type water = new Type("WATER", Color.BLUE);
 			Type electric = new Type("ELECTRIC", Color.YELLOW);
 			Type grass = new Type("GRASS", Color.GREEN);
 			Type ice = new Type("ICE", Color.CYAN);
-			Type fighting = new Type("FIGHTING", Color.RED);
+			Type fighting = new Type("FIGHTING", BRICK_RED);
 			Type poison = new Type("POISON", Color.MAGENTA);
-			Type ground = new Type("GROUND", Color.GRAY);
-			Type flying = new Type("FLYING", Color.CYAN);
-			Type psychic = new Type("PSYCHIC", Color.PINK);
-			Type bug = new Type("BUG", Color.GREEN);
-			Type rock = new Type("ROCK", Color.GRAY);
-			Type ghost = new Type("GHOST", Color.MAGENTA);
-			Type dragon = new Type("DRAGON", Color.BLUE);
+			Type ground = new Type("GROUND", LIGHT_BROWN);
+			Type flying = new Type("FLYING", SKY);
+			Type psychic = new Type("PSYCHIC", HOT_PINK);
+			Type bug = new Type("BUG", BUG_GREEN);
+			Type rock = new Type("ROCK", DARK_BROWN);
+			Type ghost = new Type("GHOST", VIOLET);
+			Type dragon = new Type("DRAGON", BLUE_VIOLET);
 			Type dark = new Type("DARK", Color.BLACK);
 			Type steel = new Type("STEEL", Color.GRAY);
-			Type fairy = new Type("FAIRY", Color.PINK);
+			Type fairy = new Type("FAIRY", LIGHT_PINK);
 			
 			Type[] typeArray = {none, normal, fire, water, electric, grass, ice, fighting, poison, ground,
 						flying, psychic, bug, rock, ghost, dragon, dark, steel, fairy};

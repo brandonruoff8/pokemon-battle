@@ -28,6 +28,7 @@ public class PokeFrame extends JFrame {
 	private JPanel buttonPanel = new JPanel();
 	
 	private JTextArea textArea = new JTextArea();
+	private JTextArea currentText = new JTextArea();
 	
 	private JLabel playerImageLabel = new JLabel();
 	private JLabel brandonImageLabel = new JLabel();
@@ -65,7 +66,7 @@ public class PokeFrame extends JFrame {
    
    public void createtextArea() {
 	   textArea = new JTextArea(2, 50);
-	   textArea.append("Brandon");
+	   currentText = new JTextArea(100, 100);
    }
    
    public void createIcons() {
@@ -79,8 +80,9 @@ public class PokeFrame extends JFrame {
    }
    
    public void createBattlePanel() {
-	   battlePanel.add(playerImageLabel);
-	   battlePanel.add(brandonImageLabel);
+	   //battlePanel.add(playerImageLabel);
+	   //battlePanel.add(brandonImageLabel);
+	   battlePanel.add(currentText);
 	   add(battlePanel);
    }
    
@@ -89,8 +91,11 @@ public class PokeFrame extends JFrame {
    }
    
    public void setLabelText(String text) {
-	   
 	   textArea.setText(text);
+   }
+   
+   public void setCurrent(String tempCurrent) {
+	   currentText.setText(tempCurrent);	   
    }
    
    public void createTextPanel(String inputString) {
@@ -127,12 +132,19 @@ public class PokeFrame extends JFrame {
 	   textPanel.setVisible(false);
 	   move1Button.setText(playerPoke.getMoves()[0].getName());
 	   move1Button.setBackground(playerPoke.getMoves()[0].getType().getColor());
+	   move1Button.setForeground(Color.WHITE);
+	   
 	   move2Button.setText(playerPoke.getMoves()[1].getName());
-	   move1Button.setBackground(playerPoke.getMoves()[0].getType().getColor());
+	   move2Button.setBackground(playerPoke.getMoves()[1].getType().getColor());
+	   move2Button.setForeground(Color.WHITE);
+	   
 	   move3Button.setText(playerPoke.getMoves()[2].getName());
-	   move1Button.setBackground(playerPoke.getMoves()[0].getType().getColor());
+	   move3Button.setBackground(playerPoke.getMoves()[2].getType().getColor());
+	   move3Button.setForeground(Color.WHITE);
+	   
 	   move4Button.setText(playerPoke.getMoves()[3].getName());
-	   move1Button.setBackground(playerPoke.getMoves()[0].getType().getColor());
+	   move4Button.setBackground(playerPoke.getMoves()[3].getType().getColor());
+	   move4Button.setForeground(Color.WHITE);
 	   buttonPanel.setVisible(true);
 	   add(buttonPanel, BorderLayout.SOUTH);
    }

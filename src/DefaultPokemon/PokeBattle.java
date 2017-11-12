@@ -80,7 +80,7 @@ public class PokeBattle {
 			turnCounter++;
 			indivTurnCounter++;
 			checkSpecialPowers(indivTurnCounter, brandonPoke, pokeBstats);
-			printCurrent2(info, playerPoke, brandonPoke, poke1stats, pokeBstats);
+			printCurrent(info, playerPoke, brandonPoke, poke1stats, pokeBstats);
 			pause(2000);
 			playerUseMove = playerDecision(playerPoke);
 			brandonUseMove = brandonDecision(info, brandonPoke, playerPoke, pokeBstats, poke1stats);
@@ -160,19 +160,17 @@ public class PokeBattle {
 	}
 	
 	public void printCurrent(PokeInfo info, Pokemon playerPoke, Pokemon brandonPoke, double[] poke1stats, double[] pokeBstats) {
-		System.out.print("\n                    " + info.cpuName + "\n"
+		frame.setCurrent("\n                    " + info.cpuName + "\n"
 				+ "                    -------------------" + "\n"
 				+ "                    Lv." + brandonPoke.getLevel() + " " + brandonPoke.getName() + "\n"
 				+ "                    HP: " + (int)pokeBstats[0] + " / " + brandonPoke.getHP() + "\n"
-				+ "                    -------------------" + "\n\n");
-		System.out.print(info.playerName + "\n"
+				+ "                    -------------------" + "\n\n"
+				+ info.playerName + "\n"
 				+ "-------------------" + "\n"
 				+ "Lv." + brandonPoke.getLevel() + " " + playerPoke.getName() + "\n"
 				+ "HP: " + (int)poke1stats[0] + " / " + playerPoke.getHP() + "\n"
 				+ "-------------------" + "\n\n");
-	}
-	
-	public void printCurrent2(PokeInfo info, Pokemon playerPoke, Pokemon brandonPoke, double[] poke1stats, double[] pokeBstats) {
+		
 		frame.setMoveButtons(playerPoke);
 	}
 	
