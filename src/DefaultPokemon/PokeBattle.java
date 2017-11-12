@@ -50,8 +50,8 @@ public class PokeBattle {
 		//Arrays and booleans to keep track of which party Pokemon have HP remaining to battle
 		boolean[] healthyParty1 = {true, true, true, true, true, true};
 		boolean[] healthyPartyB = {true, true, true, true, true, true};
-		boolean stillCanBattle1 = true;
-		boolean stillCanBattleB = true;
+		boolean stillCanBattlePlayer = true;
+		boolean stillCanBattleBrandon = true;
 		Move playerUseMove;
 		Move brandonUseMove;
 		int turnCounter = 0;
@@ -75,9 +75,7 @@ public class PokeBattle {
 		frame.setLabelText("You sent out " + playerPoke.getName() + "." + "\n\n");
 		promptEnterKey();
 		
-		
-		// PHASE ONE
-		while (stillCanBattle1 && stillCanBattleB) {
+		while (stillCanBattlePlayer && stillCanBattleBrandon) {
 			turnCounter++;
 			indivTurnCounter++;
 			checkSpecialPowers(indivTurnCounter, brandonPoke, pokeBstats);
@@ -93,7 +91,7 @@ public class PokeBattle {
 				//Check to see if the slower Pokemon still has HP to attack
 				if (stillHasHP(pokeBstats)) {
 					brandonMove(info, playerPoke, brandonPoke, poke1stats, pokeBstats, brandonUseMove);
-					//	
+					
 					healthyParty1[playerIndex] = stillHasHP(poke1stats);
 					if (!healthyParty1[playerIndex]) {
 						System.out.print(playerArray[playerIndex].getName() + " fainted." + "\n");
@@ -106,7 +104,7 @@ public class PokeBattle {
 			}
 			else {
 				brandonMove(info, playerPoke, brandonPoke, poke1stats, pokeBstats, brandonUseMove);
-				//
+				
 				if (stillHasHP(poke1stats)) {
 					playerMove(info, playerPoke, brandonPoke, poke1stats, pokeBstats, playerUseMove);
 					healthyPartyB[brandonIndex] = stillHasHP(pokeBstats);
@@ -120,9 +118,9 @@ public class PokeBattle {
 				}
 			}
 			
-			stillCanBattle1 = checkPartyCanBattle(healthyParty1);
-			stillCanBattleB = checkPartyCanBattle(healthyPartyB);
-			if(!(stillCanBattle1 && stillCanBattleB)) {
+			stillCanBattlePlayer = checkPartyCanBattle(healthyParty1);
+			stillCanBattleBrandon = checkPartyCanBattle(healthyPartyB);
+			if(!(stillCanBattlePlayer && stillCanBattleBrandon)) {
 				break;
 			}
 			if (!healthyParty1[playerIndex]) {
@@ -149,15 +147,13 @@ public class PokeBattle {
 				pokeBstats[5] = brandonPoke.getSpeed();
 			}
 		}
-		if (stillCanBattle1 && !stillCanBattleB) {
+		if (stillCanBattlePlayer) {
 			System.out.println("\nYou win!");
-			return;
-		}
-		if (stillCanBattleB && !stillCanBattle1) {
+		} else if (stillCanBattleBrandon) {
 			System.out.println("\nYou lose...");
-			return;
+		} else {
+			System.out.println("You have drawn with the champion... a rematch must occur.");
 		}
-		System.out.println("You have drawn with the champion... a rematch must occur.");
 		return;
 		
 	}
@@ -177,7 +173,6 @@ public class PokeBattle {
 	
 	public Move playerDecision(Pokemon playerPoke) {
 		int playerPromptMove = 0;
-	    //String brandonPromptMove;
 		System.out.print("Which move should " + playerPoke.getName() + " use?" + "\n");
 		for(int i = 0; i < 4; i++) {
 			System.out.print("[" + playerPoke.getMoves()[i].getType().getName() + "] " + playerPoke.getMoves()[i].getName() + " (" + (i+1) + ")" + "\n");
@@ -257,23 +252,16 @@ public class PokeBattle {
 		pause(1000);
 	}
 	
+	// Determines if the player moves first depending on speed stats and move priorities
 	public boolean playerMovesFirst(Move playerMove, Move brandonMove, double[] poke1stats, double[] pokeBstats) {
-		if (playerMove.priority > brandonMove.priority) {
-			return true;
+		if (playerMove.priority != brandonMove.priority) {
+			return playerMove.priority > brandonMove.priority;
+		} else if (poke1stats[5] != pokeBstats[5]) {
+			return poke1stats[5] > pokeBstats[5];
+		} else {
+			// When speed and priority are the same, 50% chance of moving first
+			return Math.random() > 0.50;
 		}
-		if (playerMove.priority < brandonMove.priority) {
-			return false;
-		}
-		if (poke1stats[5] > pokeBstats[5]) {
-			return true;
-		}
-		if (poke1stats[5] < pokeBstats[5]) {
-			return false;
-		}
-		if (Math.random() > 0.50) {
-			return true;
-		}
-		return false;
 	}
 	
 	public double applyModifiers(double damageInUse, Pokemon attacker, Pokemon defender, Move moveInUse, PokeInfo info) {
