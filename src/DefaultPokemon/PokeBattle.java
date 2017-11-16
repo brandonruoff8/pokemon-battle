@@ -413,10 +413,12 @@ public class PokeBattle {
 		frame.appendCurrent("Choose your next Pokemon by entering the corresponding integer: " + "\n");
 		int nextPokeInt = in.nextInt();
 		while ((nextPokeInt < 1 || nextPokeInt > 6) || (!healthyPoke[nextPokeInt - 1])) {
-			if(!healthyPoke[nextPokeInt - 1]) {
-				frame.setLabelText("That Pokemon does not have energy to battle. Choose a different one: " + "\n");
+			try {
+				if (!healthyPoke[nextPokeInt - 1]) {
+					frame.setLabelText("That Pokemon does not have energy to battle. Choose a different one: " + "\n");
+				}
 			}
-			else {
+			catch (Exception e) {
 				frame.setLabelText("Invalid. Enter an integer between 1 and 6: ");	
 			}
 			nextPokeInt = in.nextInt();
