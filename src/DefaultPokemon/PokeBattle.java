@@ -5,6 +5,8 @@ import java.io.File;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.swing.JFrame;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class PokeBattle {
 	
@@ -62,7 +64,6 @@ public class PokeBattle {
 		music1.songName = "music/TellurTownAutumnPokkenTournament.wav";
 		music1.run();
 		
-		pause(2000);
 		frame.setLabelText("Brandon: Welcome challenger. My name is Brandon. Pleased to meet you, " + info.playerName + ". \n");
 		pause(2000);
 		frame.setLabelText("I have traveled the world with my hardworking Pokemon only to return back to the" + "\n");
@@ -76,15 +77,16 @@ public class PokeBattle {
 		frame.setLabelText("You sent out " + playerPoke.getName() + "." + "\n\n");
 		pause(2000);
 		
+		frame.createButtonPanel();
+		
 		while (stillCanBattlePlayer && stillCanBattleBrandon) {
 			turnCounter++;
 			indivTurnCounter++;
 			checkSpecialPowers(indivTurnCounter, brandonPoke, pokeBstats);
-			printCurrent(info, playerPoke, brandonPoke, poke1stats, pokeBstats);
-			pause(2000);
+			printCurrent(info, playerPoke, brandonPoke, poke1stats, pokeBstats, turnCounter);
+			
 			playerUseMove = playerDecision(playerPoke);
 			brandonUseMove = brandonDecision(info, brandonPoke, playerPoke, pokeBstats, poke1stats);
-			pause(1000);
 			//Check to see which Pokemon is faster, and then that Pokemon moves first			
 			
 			if (playerMovesFirst(playerUseMove, brandonUseMove, poke1stats, pokeBstats)) {
@@ -95,12 +97,14 @@ public class PokeBattle {
 					
 					healthyParty1[playerIndex] = stillHasHP(poke1stats);
 					if (!healthyParty1[playerIndex]) {
-						System.out.print(playerArray[playerIndex].getName() + " fainted." + "\n");
+						frame.setLabelText(playerArray[playerIndex].getName() + " fainted." + "\n");
+						pause(2000);
 					}
 				}
 				else {
 					healthyPartyB[brandonIndex] = false;
-					System.out.print(brandonArray[brandonIndex].getName() + " fainted." + "\n");
+					frame.setLabelText(brandonArray[brandonIndex].getName() + " fainted." + "\n");
+					pause(2000);
 				}
 			}
 			else {
@@ -110,12 +114,14 @@ public class PokeBattle {
 					playerMove(info, playerPoke, brandonPoke, poke1stats, pokeBstats, playerUseMove);
 					healthyPartyB[brandonIndex] = stillHasHP(pokeBstats);
 					if (!healthyPartyB[brandonIndex]) {
-						System.out.print(brandonArray[brandonIndex].getName() + " fainted." + "\n");
+						frame.setLabelText(brandonArray[brandonIndex].getName() + " fainted." + "\n");
+						pause(2000);
 					}
 				}
 				else {
 					healthyParty1[playerIndex] = false;
-					System.out.print(playerArray[playerIndex].getName() + " fainted." + "\n");
+					frame.setLabelText(playerArray[playerIndex].getName() + " fainted." + "\n");
+					pause(2000);
 				}
 			}
 			
@@ -127,19 +133,17 @@ public class PokeBattle {
 			if (!healthyParty1[playerIndex]) {
 				playerIndex = playerNextPoke(playerArray, healthyParty1);
 				playerPoke = playerArray[playerIndex];
-				poke1stats[0]= playerPoke.getHP();
-				poke1stats[1]= playerPoke.getAttack();
-				poke1stats[2]= playerPoke.getDefense();
-				poke1stats[3]= playerPoke.getSpAtk();
-				poke1stats[4]= playerPoke.getSpDef();
-				poke1stats[5]= playerPoke.getSpeed();
-				System.out.print("You sent out " + playerPoke.getName() + "." + "\n\n");
+				copyPokeStats(poke1stats, playerPoke);
+				
+				frame.setLabelText("You sent out " + playerPoke.getName() + "." + "\n\n");
 				pause(2000);
 			}
 			if(!healthyPartyB[brandonIndex]) {
 				brandonIndex = brandonNextPoke(brandonArray, brandonIndex, music1);
 				indivTurnCounter = 0;
 				brandonPoke = brandonArray[brandonIndex];
+				copyPokeStats(pokeBstats, brandonPoke);
+				
 				pokeBstats[0] = brandonPoke.getHP();
 				pokeBstats[1] = brandonPoke.getAttack();
 				pokeBstats[2] = brandonPoke.getDefense();
@@ -149,18 +153,20 @@ public class PokeBattle {
 			}
 		}
 		if (stillCanBattlePlayer) {
-			System.out.println("\nYou win!");
+			frame.setLabelText("\nYou win!");
 		} else if (stillCanBattleBrandon) {
-			System.out.println("\nYou lose...");
+			frame.setLabelText("\nYou lose...");
 		} else {
-			System.out.println("You have drawn with the champion... a rematch must occur.");
+			frame.setLabelText("You have drawn with the champion... a rematch must occur.");
 		}
 		return;
 		
 	}
 	
-	public void printCurrent(PokeInfo info, Pokemon playerPoke, Pokemon brandonPoke, double[] poke1stats, double[] pokeBstats) {
-		frame.setCurrent("\n                    " + info.cpuName + "\n"
+	public void printCurrent(PokeInfo info, Pokemon playerPoke, Pokemon brandonPoke, 
+							 double[] poke1stats, double[] pokeBstats, int turnCounter) {
+		frame.setCurrent("Turn: " + turnCounter
+				+ "\n                    " + info.cpuName + "\n"
 				+ "                    -------------------" + "\n"
 				+ "                    Lv." + brandonPoke.getLevel() + " " + brandonPoke.getName() + "\n"
 				+ "                    HP: " + (int)pokeBstats[0] + " / " + brandonPoke.getHP() + "\n"
@@ -172,6 +178,8 @@ public class PokeBattle {
 				+ "-------------------" + "\n\n");
 		
 		frame.setMoveButtons(playerPoke);
+		frame.createButtonPanel();
+		pause(2000);
 	}
 	
 	public Move playerDecision(Pokemon playerPoke) {
@@ -187,6 +195,7 @@ public class PokeBattle {
 				System.out.print("Invalid choice.");
 			}
 		}
+		frame.createTextPanel();
 		return playerPoke.getMoves()[playerPromptMove - 1];
 	}
 	
@@ -219,20 +228,21 @@ public class PokeBattle {
 	public void playerMove(PokeInfo info, Pokemon playerPoke, Pokemon brandonPoke, double[] poke1stats, double[] pokeBstats, Move playerUseMove) {
 		double playerDamage;
 		boolean success = checkMoveHits(playerUseMove);
-		System.out.println(playerPoke.getName() + " used " + playerUseMove.getName() + "!");
+		frame.setLabelText(playerPoke.getName() + " used " + playerUseMove.getName() + "!");
 		pause(2000);
 		if (success) {
-			System.out.println(info.typeList.checkEffective( playerUseMove.getType(), brandonPoke.getType1(), brandonPoke.getType2()));
-			pause(1000);
+			frame.setLabelText(info.typeList.checkEffective( playerUseMove.getType(), brandonPoke.getType1(), brandonPoke.getType2()));
+			pause(2000);
 			playerDamage = info.damageCalculator(poke1stats, pokeBstats, playerPoke, brandonPoke, playerUseMove);
 			//System.out.print(playerDamage + " damage initially calculated.\n");
 			playerDamage = applyModifiers(playerDamage, playerPoke, brandonPoke, playerUseMove, info);
-			System.out.print((int)playerDamage + " damage." + "\n\n");
+			frame.setLabelText((int)playerDamage + " damage." + "\n\n");
 			pokeBstats[0] = pokeBstats[0] - playerDamage;
 		}
 		else {
-			System.out.print("The attack missed!" + "\n\n");
+			frame.setLabelText("The attack missed!" + "\n\n");
 		}
+		pause(2000);
 	}
 	
 	public void brandonMove(PokeInfo info, Pokemon playerPoke, Pokemon brandonPoke, double[] poke1stats, double[] pokeBstats, Move brandonUseMove) {
@@ -241,18 +251,18 @@ public class PokeBattle {
 		// System.out.print("Damage initially calculated: " + brandonDamage + "\n");
 		brandonDamage = applyModifiers(brandonDamage, brandonPoke, playerPoke, brandonUseMove, info);
 		boolean success = checkMoveHits(brandonUseMove);
-		System.out.println("Brandon: " + brandonPoke.getName() + "! Use " + brandonUseMove.getName() + "!");
+		frame.setLabelText("Brandon: " + brandonPoke.getName() + "! Use " + brandonUseMove.getName() + "!");
 		pause(2000);
 		if (success) {
-			System.out.println(info.typeList.checkEffective(brandonUseMove.getType(), playerPoke.getType1(), playerPoke.getType2()));
-			pause(1000);
-			System.out.println((int)brandonDamage + " damage.\n");
+			frame.setLabelText(info.typeList.checkEffective(brandonUseMove.getType(), playerPoke.getType1(), playerPoke.getType2()));
+			pause(2000);
+			frame.setLabelText((int)brandonDamage + " damage.\n");
 			poke1stats[0] = poke1stats[0] - brandonDamage;
 		}
 		else {
-			System.out.print("The attack missed!" + "\n\n");
+			frame.setLabelText("The attack missed!" + "\n\n");
 		}
-		pause(1000);
+		pause(2000);
 	}
 	
 	// Determines if the player moves first depending on speed stats and move priorities
@@ -295,42 +305,42 @@ public class PokeBattle {
 	public void checkSpecialPowers(int tempIndivTurnCounter, Pokemon tempPokemon, double[] tempPokeStats) {
 		if (tempIndivTurnCounter == 2 && tempPokemon.getName().equals("Galvantula")) {
 			tempPokemon.getMoves()[0].power = (tempPokemon.getMoves()[0].getPower() * 1.5);
-			System.out.println("<< Galvantula's Power Charge! >>\n");
+			frame.setLabelText("<< Galvantula's Power Charge! >>\n");
 			pause(2000);
-			System.out.println("Galvantula's electricity has built up! Its electric-type moves are more powerful.");
+			frame.setLabelText("Galvantula's electricity has built up! Its electric-type moves are more powerful.");
 			pause(2000);
-			System.out.println("Brandon: Oh yes. If you thought this was going to be a normal battle, you were wrong.");
+			frame.setLabelText("Brandon: Oh yes. If you thought this was going to be a normal battle, you were wrong.");
 			pause(2000);
-			System.out.println("My Pokemon have powerful, extraordinary abilities. Do you still think you can win this battle?");
+			frame.setLabelText("My Pokemon have powerful, extraordinary abilities. Do you still think you can win this battle?");
 			pause(2000);
-			System.out.println("Show me what you've got!");
+			frame.setLabelText("Show me what you've got!");
 			pause(2000);
 		}
 		if(tempIndivTurnCounter == 2 && tempPokemon.getName().equals("Infernape")) {
 			tempPokeStats[1] = tempPokeStats[1] * 1.5;
-			System.out.println("<< Infernape's Blazing Blitz! >>");
+			frame.setLabelText("<< Infernape's Blazing Blitz! >>");
 			pause(2000);
-			System.out.println("Infernape is on fire! Its attack rose.");
+			frame.setLabelText("Infernape is on fire! Its attack rose.");
 			pause(2000);
-			System.out.println("Brandon: Infernape has a tendency to let its frustrations take control during battle.");
+			frame.setLabelText("Brandon: Infernape has a tendency to let its frustrations take control during battle.");
 			pause(2000);
-			System.out.println("A normal Infernape would have Blaze, an ability that boosts its fire-type moves when it");
+			frame.setLabelText("A normal Infernape would have Blaze, an ability that boosts its fire-type moves when it");
 			pause(2000);
-			System.out.println("is in danger. However, my Infernape has figured out how to use that power as it chooses.");
+			frame.setLabelText("is in danger. However, my Infernape has figured out how to use that power as it chooses.");
 			pause(2000);
-			System.out.println("I hope you're prepared to feel the burn!");
+			frame.setLabelText("I hope you're prepared to feel the burn!");
 			pause(2000);
 		}
 		if(tempIndivTurnCounter == 1 && tempPokemon.getName().equals("Klinklang")) {
 			tempPokeStats[2] = tempPokeStats[2] * 1.5;
 			tempPokeStats[4] = tempPokeStats[4] * 1.5;
-			System.out.println("<< Klinklang's Unbreakable Metal! >> \n");
+			frame.setLabelText("<< Klinklang's Unbreakable Metal! >> \n");
 			pause(2000);
-			System.out.println("Klinklang's tough metal is glistening. Its defense and special defense rose.");
+			frame.setLabelText("Klinklang's tough metal is glistening. Its defense and special defense rose.");
 			pause(2000);
-			System.out.println("Klinklang is one of the few Pokemon that are pure steel-type.");
+			frame.setLabelText("Klinklang is one of the few Pokemon that are pure steel-type.");
 			pause(2000);
-			System.out.println("Its gears are extremely sturdy. You won't be able to damage it easily.");
+			frame.setLabelText("Its gears are extremely sturdy. You won't be able to damage it easily.");
 			pause(2000);			
 		}
 		if(tempPokemon.getName().equals("Wishiwashi")) {
@@ -341,9 +351,9 @@ public class PokeBattle {
 				tempPokeStats[3] = 45+32;
 				tempPokeStats[4] = 45;
 				tempPokeStats[5] = 60;
-				System.out.println("Wishiwashi is low on HP... its school fled.");
+				frame.setLabelText("Wishiwashi is low on HP... its school fled.");
 				pause(2000);
-				System.out.println("Wishiwashi changed to Solo Form. Its stats decreased.");
+				frame.setLabelText("Wishiwashi changed to Solo Form. Its stats decreased.");
 				pause(2000);				
 			}
 		}
@@ -351,7 +361,7 @@ public class PokeBattle {
 		if(tempPokemon.getName().equals("Sylveon"))
 		{
 			if(tempIndivTurnCounter == 1) {
-				System.out.println("Sylveon appears to have a deep connection with its trainer.");
+				frame.setLabelText("Sylveon appears to have a deep connection with its trainer.");
 			}
 			if(tempIndivTurnCounter >= 2) {
 				double recover = (int)(tempPokemon.getHP()/8);
@@ -359,13 +369,13 @@ public class PokeBattle {
 					recover = tempPokemon.getHP() - tempPokeStats[0];
 				}				
 				tempPokeStats[0] = tempPokeStats[0] + recover;
-				System.out.println("<< Sylveon's Eternal Affection! >>\n");
+				frame.setLabelText("<< Sylveon's Eternal Affection! >>\n");
 				pause(2000);
 				if (tempIndivTurnCounter == 2) {
-					System.out.println("Brandon: Sylveon! I'm letting you down, I'm sorry. I can't let you get hurt anymore!");
+					frame.setLabelText("Brandon: Sylveon! I'm letting you down, I'm sorry. I can't let you get hurt anymore!");
 					pause(2000);
 				}
-				System.out.println("Sylveon's connection with Brandon allowed it to recover " + (int)recover + " HP.");
+				frame.setLabelText("Sylveon's connection with Brandon allowed it to recover " + (int)recover + " HP.");
 				pause(2000);
 			}
 		}
@@ -389,31 +399,38 @@ public class PokeBattle {
 	}
 	
 	public int playerNextPoke(Pokemon[] playerArray, boolean[] healthyPoke) {
-		System.out.print("\n" + "Your party: " + "\n"
+		frame.setCurrent("");
+		frame.appendCurrent("\n" + "Your party: " + "\n"
 						+ "-----------" + "\n");
 		for (int i = 0; i < 6; i++) {
 			if (healthyPoke[i] == true) {
-				System.out.print(playerArray[i].getName() + " (" + (i + 1) + ")" + "\n");
+				frame.appendCurrent(playerArray[i].getName() + " (" + (i + 1) + ")" + "\n");
 			}
 			else {
-				System.out.print(playerArray[i].getName() + " - Fainted" + "\n");
+				frame.appendCurrent(playerArray[i].getName() + " - Fainted" + "\n");
 			}
 		}
-		System.out.print("Choose your next Pokemon by entering the corresponding integer: " + "\n");
+		frame.appendCurrent("Choose your next Pokemon by entering the corresponding integer: " + "\n");
 		int nextPokeInt = in.nextInt();
-		while (nextPokeInt < 1 || nextPokeInt > 6) {
-			System.out.print("Invalid. Enter an integer between 1 and 6: ");
+		while ((nextPokeInt < 1 || nextPokeInt > 6) || (!healthyPoke[nextPokeInt - 1])) {
+			if(!healthyPoke[nextPokeInt - 1]) {
+				frame.setLabelText("That Pokemon does not have energy to battle. Choose a different one: " + "\n");
+			}
+			else {
+				frame.setLabelText("Invalid. Enter an integer between 1 and 6: ");	
+			}
 			nextPokeInt = in.nextInt();
 		}
-		while (!healthyPoke[nextPokeInt - 1]) {
-			System.out.print("That Pokemon does not have energy to battle. Choose a different one: " + "\n");
-			nextPokeInt = in.nextInt();
-			while (nextPokeInt < 1 || nextPokeInt > 6) {
-				System.out.print("Invalid. Enter an integer between 1 and 6: " + "\n");
-				nextPokeInt = in.nextInt();
-				}
-		}	
 		return (nextPokeInt - 1);
+	}
+	
+	public void copyPokeStats(double[] tempStats, Pokemon tempPoke) {
+		tempStats[0]= tempPoke.getHP();
+		tempStats[1]= tempPoke.getAttack();
+		tempStats[2]= tempPoke.getDefense();
+		tempStats[3]= tempPoke.getSpAtk();
+		tempStats[4]= tempPoke.getSpDef();
+		tempStats[5]= tempPoke.getSpeed();
 	}
 	
 	public int brandonNextPoke(Pokemon[] brandonArray, int brandonIndex, Music music) {
@@ -452,38 +469,38 @@ public class PokeBattle {
 	}
 	
 	public void printFaintGalvantula() {
-		System.out.println("Brandon: You did a great job Galvantula. You got us off to a great start. However, challenger,");
-		System.out.println("it would appear now that my team and I will have turn it up a notch.");
+		frame.setLabelText("Brandon: You did a great job Galvantula. You got us off to a great start. However, challenger,");
+		frame.setLabelText("it would appear now that my team and I will have turn it up a notch.");
 		pause(2000);
-		System.out.println("You won't defeat me easily. I can guarantee you that right now.");
+		frame.setLabelText("You won't defeat me easily. I can guarantee you that right now.");
 		pause(2000);
-		System.out.println("Alright then. Time for my second Pokemon. Go Infernape! Show them how your heart burns for victory!");
+		frame.setLabelText("Alright then. Time for my second Pokemon. Go Infernape! Show them how your heart burns for victory!");
 		pause(2000);
 	}
 	
 	public void printFaintInfernape() {
 		pause(2000);
-		System.out.println("Brandon: Go! Klinklang!");
+		frame.setLabelText("Brandon: Go! Klinklang!");
 	}
 	
 	public void printFaintKlinklang() {
 		pause(2000);
-		System.out.println("Brandon: Go! Wishiwashi!");
+		frame.setLabelText("Brandon: Go! Wishiwashi!");
 	}
 	
 	public void printFaintWishiwashi() {
 		pause(2000);
-		System.out.println("Brandon: Go! Sylveon!");
+		frame.setLabelText("Brandon: Go! Sylveon!");
 	}
 	
 	public void printFaintSylveon() {
 		pause(2000);
-		System.out.println("Brandon: Go! Medicham!");
+		frame.setLabelText("Brandon: Go! Medicham!");
 	}
 	
 	public void printFaintMedicham() {
 		pause(2000);
-		System.out.println("Brandon: Oh no... this can't be...");		
+		frame.setLabelText("Brandon: Oh no... this can't be...");		
 	}
 	
 	public void promptEnterKey() {
@@ -500,7 +517,7 @@ public class PokeBattle {
 			Thread.sleep(time);
 		}
 		catch(Exception ex) {
-			System.out.print("Pause failed.\n");
+			frame.setLabelText("Pause failed.\n");
 		}
 	}
 }

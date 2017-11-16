@@ -17,8 +17,8 @@ import javax.swing.ImageIcon;
 
 public class PokeFrame extends JFrame {
 	
-	private static final int FRAME_WIDTH = 500;
-	private static final int FRAME_HEIGHT = 500;
+	private static final int FRAME_WIDTH = 800;
+	private static final int FRAME_HEIGHT = 800;
 	
 	private GridLayout gridLayout = new GridLayout(2,2);
 	private FlowLayout flowLayout = new FlowLayout();
@@ -41,19 +41,18 @@ public class PokeFrame extends JFrame {
 	private JButton move3Button = new JButton();
 	private JButton move4Button = new JButton();
 	private JButton enterButton = new JButton();
-	
 	private EnterListener enterListener = new EnterListener();
 
 	
    public PokeFrame()
    {  
 	  setSize(FRAME_WIDTH, FRAME_HEIGHT);
-      createtextArea();
+      createTextArea();
       createMoveButtons();
 	  createIcons();
       createBattlePanel();
       createButtonPanel();
-      createTextPanel(""); 
+      createTextPanel(); 
    }
    
    public void createMoveButtons() {
@@ -64,9 +63,11 @@ public class PokeFrame extends JFrame {
 	   enterButton = new JButton("Enter");
    }
    
-   public void createtextArea() {
+   public void createTextArea() {
 	   textArea = new JTextArea(2, 50);
-	   currentText = new JTextArea(100, 100);
+	   textArea.setEditable(false);
+	   currentText = new JTextArea(40, 40);
+	   currentText.setEditable(false);
    }
    
    public void createIcons() {
@@ -86,10 +87,6 @@ public class PokeFrame extends JFrame {
 	   add(battlePanel);
    }
    
-   public void createTextPanel() {
-	   add(textPanel);
-   }
-   
    public void setLabelText(String text) {
 	   textArea.setText(text);
    }
@@ -98,12 +95,20 @@ public class PokeFrame extends JFrame {
 	   currentText.setText(tempCurrent);	   
    }
    
-   public void createTextPanel(String inputString) {
+   public void appendCurrent(String tempCurrent) {
+	   currentText.append(tempCurrent);
+   }
+   
+   public void createTextPanel() {
+
 	   textPanel.setLayout(flowLayout);
-	   textArea.append(inputString);
+	   textArea.setText("");
 	   enterButton.addActionListener(enterListener);
 	   textPanel.add(textArea);
 	   textPanel.add(enterButton);
+	   buttonPanel.setVisible(false);
+	   textPanel.setVisible(true);
+	   remove(buttonPanel);
 	   add(textPanel, BorderLayout.SOUTH);
    }
    
@@ -113,7 +118,10 @@ public class PokeFrame extends JFrame {
 	   buttonPanel.add(move2Button);
 	   buttonPanel.add(move3Button);
 	   buttonPanel.add(move4Button);
-	   buttonPanel.setVisible(false);
+	   textPanel.setVisible(false);
+	   buttonPanel.setVisible(true);
+	   remove(textPanel);
+	   add(buttonPanel, BorderLayout.SOUTH);
    }
    
    public void enterButtonWait() {
@@ -129,7 +137,6 @@ public class PokeFrame extends JFrame {
    } 
    
    public void setMoveButtons(Pokemon playerPoke) {
-	   textPanel.setVisible(false);
 	   move1Button.setText(playerPoke.getMoves()[0].getName());
 	   move1Button.setBackground(playerPoke.getMoves()[0].getType().getColor());
 	   move1Button.setForeground(Color.WHITE);
@@ -146,6 +153,5 @@ public class PokeFrame extends JFrame {
 	   move4Button.setBackground(playerPoke.getMoves()[3].getType().getColor());
 	   move4Button.setForeground(Color.WHITE);
 	   buttonPanel.setVisible(true);
-	   add(buttonPanel, BorderLayout.SOUTH);
    }
 }
