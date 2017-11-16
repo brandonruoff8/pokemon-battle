@@ -77,16 +77,14 @@ public class PokeBattle {
 		frame.setLabelText("You sent out " + playerPoke.getName() + "." + "\n\n");
 		pause(2000);
 		
-		frame.createButtonPanel();
-		
 		while (stillCanBattlePlayer && stillCanBattleBrandon) {
 			turnCounter++;
 			indivTurnCounter++;
 			checkSpecialPowers(indivTurnCounter, brandonPoke, pokeBstats);
 			printCurrent(info, playerPoke, brandonPoke, poke1stats, pokeBstats, turnCounter);
-			
 			playerUseMove = playerDecision(playerPoke);
 			brandonUseMove = brandonDecision(info, brandonPoke, playerPoke, pokeBstats, poke1stats);
+			frame.buttonPanelVisible(false);
 			//Check to see which Pokemon is faster, and then that Pokemon moves first			
 			
 			if (playerMovesFirst(playerUseMove, brandonUseMove, poke1stats, pokeBstats)) {
@@ -143,13 +141,6 @@ public class PokeBattle {
 				indivTurnCounter = 0;
 				brandonPoke = brandonArray[brandonIndex];
 				copyPokeStats(pokeBstats, brandonPoke);
-				
-				pokeBstats[0] = brandonPoke.getHP();
-				pokeBstats[1] = brandonPoke.getAttack();
-				pokeBstats[2] = brandonPoke.getDefense();
-				pokeBstats[3] = brandonPoke.getSpAtk();
-				pokeBstats[4] = brandonPoke.getSpDef();
-				pokeBstats[5] = brandonPoke.getSpeed();
 			}
 		}
 		if (stillCanBattlePlayer) {
@@ -178,13 +169,12 @@ public class PokeBattle {
 				+ "-------------------" + "\n\n");
 		
 		frame.setMoveButtons(playerPoke);
-		frame.createButtonPanel();
 		pause(2000);
 	}
 	
 	public Move playerDecision(Pokemon playerPoke) {
 		int playerPromptMove = 0;
-		System.out.print("Which move should " + playerPoke.getName() + " use?" + "\n");
+		frame.setLabelText("Which move should " + playerPoke.getName() + " use?" + "\n");
 		for(int i = 0; i < 4; i++) {
 			System.out.print("[" + playerPoke.getMoves()[i].getType().getName() + "] " + playerPoke.getMoves()[i].getName() + " (" + (i+1) + ")" + "\n");
 		}
@@ -195,7 +185,6 @@ public class PokeBattle {
 				System.out.print("Invalid choice.");
 			}
 		}
-		frame.createTextPanel();
 		return playerPoke.getMoves()[playerPromptMove - 1];
 	}
 	

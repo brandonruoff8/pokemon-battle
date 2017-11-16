@@ -24,7 +24,7 @@ public class PokeFrame extends JFrame {
 	private FlowLayout flowLayout = new FlowLayout();
 	
 	private JPanel battlePanel = new JPanel();
-	private JPanel textPanel = new JPanel();
+	//private JPanel textPanel = new JPanel();
 	private JPanel buttonPanel = new JPanel();
 	
 	private JTextArea textArea = new JTextArea();
@@ -51,8 +51,7 @@ public class PokeFrame extends JFrame {
       createMoveButtons();
 	  createIcons();
       createBattlePanel();
-      createButtonPanel();
-      createTextPanel(); 
+      createButtonPanel(); 
    }
    
    public void createMoveButtons() {
@@ -84,6 +83,10 @@ public class PokeFrame extends JFrame {
 	   //battlePanel.add(playerImageLabel);
 	   //battlePanel.add(brandonImageLabel);
 	   battlePanel.add(currentText);
+	   textArea.setText("");
+	   enterButton.addActionListener(enterListener);
+	   battlePanel.add(textArea, BorderLayout.SOUTH);
+	   battlePanel.add(enterButton, BorderLayout.SOUTH);
 	   add(battlePanel);
    }
    
@@ -99,29 +102,18 @@ public class PokeFrame extends JFrame {
 	   currentText.append(tempCurrent);
    }
    
-   public void createTextPanel() {
-
-	   textPanel.setLayout(flowLayout);
-	   textArea.setText("");
-	   enterButton.addActionListener(enterListener);
-	   textPanel.add(textArea);
-	   textPanel.add(enterButton);
-	   buttonPanel.setVisible(false);
-	   textPanel.setVisible(true);
-	   remove(buttonPanel);
-	   add(textPanel, BorderLayout.SOUTH);
-   }
-   
    public void createButtonPanel() {
 	   buttonPanel.setLayout(gridLayout);
 	   buttonPanel.add(move1Button);
 	   buttonPanel.add(move2Button);
 	   buttonPanel.add(move3Button);
 	   buttonPanel.add(move4Button);
-	   textPanel.setVisible(false);
-	   buttonPanel.setVisible(true);
-	   remove(textPanel);
+	   buttonPanel.setVisible(false);
 	   add(buttonPanel, BorderLayout.SOUTH);
+   }
+   
+   public void buttonPanelVisible(boolean visible) {
+	   buttonPanel.setVisible(visible);
    }
    
    public void enterButtonWait() {
