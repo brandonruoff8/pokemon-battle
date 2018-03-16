@@ -16,21 +16,13 @@ public class PokeMain {
 		PokeList pokeList = new PokeList();
 		PokeInfo info = new PokeInfo();
 		PokeBattle battle = new PokeBattle();
-		info.choosePokemon();
+		battle.choosePokemon(info);
 		
 //		System.out.print("Brandon's party: "
 //						+ "\n"
 //						+ "----------------"
 //						+ "\n");
 //		info.printParty(info.brandonParty);
-		System.out.print("Your party: "
-						+ "\n"
-						+ "-----------"
-						+ "\n");
-		info.printParty(info.playerParty);
-		
-		System.out.print("What is your name, challenger?" + "\n");
-		info.playerName = in.next();
 		
 		music.endSong();
 		

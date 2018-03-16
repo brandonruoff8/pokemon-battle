@@ -10,18 +10,22 @@ import javax.swing.JTextArea;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.Font;
+//import java.awt.FlowLayout;
+//import java.awt.Font;
 import javax.swing.ImageIcon;
 
 
 public class PokeFrame extends JFrame {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static final int FRAME_WIDTH = 800;
 	private static final int FRAME_HEIGHT = 800;
 	
 	private GridLayout gridLayout = new GridLayout(2,2);
-	private FlowLayout flowLayout = new FlowLayout();
+	//private FlowLayout flowLayout = new FlowLayout();
 	
 	private JPanel battlePanel = new JPanel();
 	//private JPanel textPanel = new JPanel();
@@ -42,6 +46,8 @@ public class PokeFrame extends JFrame {
 	private JButton move4Button = new JButton();
 	private JButton enterButton = new JButton();
 	private EnterListener enterListener = new EnterListener();
+	
+	public boolean continue_program = true;
 
 	
    public PokeFrame()
@@ -64,7 +70,7 @@ public class PokeFrame extends JFrame {
    
    public void createTextArea() {
 	   textArea = new JTextArea(2, 50);
-	   textArea.setEditable(false);
+	   //textArea.setEditable(false);
 	   currentText = new JTextArea(40, 40);
 	   currentText.setEditable(false);
    }
@@ -98,6 +104,10 @@ public class PokeFrame extends JFrame {
 	   currentText.setText(tempCurrent);	   
    }
    
+   public String getTextArea() {
+	   return textArea.getText();
+   }
+   
    public void appendCurrent(String tempCurrent) {
 	   currentText.append(tempCurrent);
    }
@@ -116,15 +126,11 @@ public class PokeFrame extends JFrame {
 	   buttonPanel.setVisible(visible);
    }
    
-   public void enterButtonWait() {
-	   
-   }
-   
    class EnterListener implements ActionListener
    {
      public void actionPerformed(ActionEvent event)
      {
-    	 
+    	 continue_program = true;
      }
    } 
    

@@ -1,12 +1,12 @@
 package DefaultPokemon;
 //import java.util.concurrent.TimeUnit;
 import java.util.Scanner;
-import java.io.File;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
+//import java.io.File;
+//import javax.sound.sampled.AudioSystem;
+//import javax.sound.sampled.Clip;
 import javax.swing.JFrame;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+//import java.awt.event.ActionListener;
+//import java.awt.event.ActionEvent;
 
 public class PokeBattle {
 	
@@ -14,11 +14,79 @@ public class PokeBattle {
 	
 	Scanner in = new Scanner(System.in);
 	
-	public void commence(TypeList typeList, MoveList moveList, PokeList pokeList, PokeInfo info) {	
-			
+	public void choosePokemon(PokeInfo info) {
 		frame.setTitle("Brandon's Pokemon Emulator");
 	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    frame.setVisible(true);
+		
+	    frame.appendCurrent("You are about to challenge the champion from America, Brandon, in a 6v6 Pokemon battle.");
+	    frame.appendCurrent("\n[Use the ENTER key to move through text]");
+		info.promptEnterKey(frame);
+		frame.setCurrent("Please enter the index numbers of the Pokemon you would like to add to your party."
+				+ "\n"
+				+ "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
+				+ "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"
+				+ "\n");
+		info.promptEnterKey(frame);
+		// Printing the choosable Pokemon with their moves listed below them
+		for(int i = 0; i < info.pokeArray.length; i++) {
+			
+			for(int j = 0; j < 5; j++) {
+				try {
+					frame.appendCurrent("(" + (i + 1) + ") "  + info.pokeArray[i].getName() + "\t");
+					i++;
+				}
+				catch (Exception e) {
+					i = i + (5-j) ;
+					break;
+				}
+			}
+			i = i - 5;
+			frame.appendCurrent("\n");
+			
+			for(int j = 0; j < 4; j++) {
+				try {
+					frame.appendCurrent(info.pokeArray[i].getMoves()[j].getName() + "\t");
+					frame.appendCurrent(info.pokeArray[i+1].getMoves()[j].getName() + "\t");
+					frame.appendCurrent(info.pokeArray[i+2].getMoves()[j].getName() + "\t");
+					frame.appendCurrent(info.pokeArray[i+3].getMoves()[j].getName() + "\t");
+					frame.appendCurrent(info.pokeArray[i+4].getMoves()[j].getName() + "\t");	
+					frame.appendCurrent("\n");
+				}
+				catch (Exception e) {
+					frame.appendCurrent("\n");
+				}
+			}
+			frame.appendCurrent("\n");
+			i = i + 4;
+			info.pause(300);
+		}
+		
+		int index = 0;
+		int enterPoke = -1;
+		frame.appendCurrent("\n" + "Enter a corresponding integer in the box below and press [ENTER]:" + "\n");
+		while(index < 6) {
+			try {
+			info.promptEnterKey(frame);
+			enterPoke = Integer.parseInt(frame.getTextArea()) - 1;
+			info.playerParty[index] = info.pokeArray[enterPoke];
+			frame.appendCurrent(info.pokeArray[enterPoke].getName()
+							+ " has been added to your party in slot "
+							+ (index + 1) 
+							+ "."
+							+ "\n");
+			index++;
+			}		
+			catch(Exception e) {
+				frame.appendCurrent("Not a valid choice" + "\n");
+			}
+		}	
+
+		info.printParty(info.playerParty, frame);
+		info.setUserName(info, frame);
+	}
+	
+	public void commence(TypeList typeList, MoveList moveList, PokeList pokeList, PokeInfo info) {	
 		
 		// Player and opponent's party Pokemon
 		Pokemon playerArray[] = info.playerParty;
